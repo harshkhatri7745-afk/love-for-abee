@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>For my Abee 💖</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(135deg,#ff9a9e,#fad0c4);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+}
+
+.page{
+  display:none;
+  width:90%;
+  max-width:420px;
+  animation:fade .6s ease;
+}
+
+.page.active{display:block}
+
+@keyframes fade{
+  from{opacity:0;transform:scale(.96)}
+  to{opacity:1;transform:scale(1)}
+}
+
+button{
+  background:#ff4f8b;
+  color:#fff;
+  border:none;
+  border-radius:30px;
+  padding:14px 26px;
+  font-size:16px;
+  cursor:pointer;
+  margin-top:16px;
+}
+
+h1,h2,p{margin:10px 0}
+
+.progress-box{
+  background:#2b0f1e;
+  color:#fff;
+  padding:22px;
+  border-radius:22px;
+}
+
+.progress{
+  height:14px;
+  background:#555;
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.progress span{
+  display:block;
+  height:100%;
+  width:0%;
+  background:linear-gradient(to right,#ff6aa2,#ff2f77);
+}
+
+.option-btn{
+  background:#fff;
+  color:#ff4f8b;
+  width:100%;
+  margin:8px 0;
+  border-radius:25px;
+  border:none;
+  padding:14px;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.option-btn.revealed{
+  background:#ff4f8b;
+  color:#fff;
+}
+
+.note-card{
+  background:#fff;
+  border-radius:26px;
+  padding:30px;
+}
+
+.typing{
+  white-space:pre-wrap;
+  text-align:left;
+  line-height:1.6;
+}
+
+.hidden{display:none}
+</style>
+</head>
+
+<body>
+
+<audio id="music" src="music.mp3" loop></audio>
+
+<!-- PAGE 1 -->
+<div class="page active" id="p1">
+  <h1>Hyy beautiful abee 💕</h1>
+  <img src="bear-hello.gif" width="190">
+  <button onclick="go(2)">Open my heart 💖</button>
+</div>
+
+<!-- PAGE 2 -->
+<div class="page" id="p2">
+  <p>Measuring ur cutee my bubu 🐷</p>
+  <div class="progress-box">
+    <div class="progress"><span id="bar"></span></div>
+    <h2 id="percent">0%</h2>
+    <p id="warn" class="hidden">⚠️ Too cute to handle</p>
+    <img src="heart-overload.gif" width="160">
+  </div>
+</div>
+
+<!-- PAGE 3 -->
+<div class="page" id="p3">
+  <h1>Just for you 💞</h1>
+  <p>Tap each one to reveal 💗</p>
+
+  <button class="option-btn" data-text="You look adorable">❤️</button>
+  <button class="option-btn" data-text="You have the sweetest vibe">❤️</button>
+  <button class="option-btn" data-text="You make things feel lighter">❤️</button>
+  <button class="option-btn" data-text="You are naturally charming">❤️</button>
+  <button class="option-btn" data-text="You make everything feel more special">❤️</button>
+
+  <button id="seeMore" class="hidden" onclick="go(4)">See more →</button>
+</div>
+
+<!-- PAGE 4 -->
+<div class="page" id="p4">
+  <h1>A little note for you 💌</h1>
+  <img src="note.gif" width="220">
+  <p>Tap to open</p>
+  <button onclick="openNote()">Open the note 💌</button>
+</div>
+
+<!-- PAGE 5 -->
+<div class="page" id="p5">
+  <div class="note-card">
+    <div id="noteText" class="typing"></div>
+  </div>
+  <button id="noteNext" class="hidden" onclick="go(6)">
+    One more thing my abee 💕
+  </button>
+</div>
+
+<!-- PAGE 6 -->
+<div class="page" id="p6">
+  <h1 id="valText"></h1>
+  <button onclick="go(7)">Yes 😘</button>
+  <button onclick="go(7)">Yes 💕</button>
+</div>
+
+<!-- PAGE 7 -->
+<div class="page" id="p7">
+  <img src="final-love.gif" width="220">
+  <h1>MWUAAAA 💋💋</h1>
+  <p>I love you too abee 💖</p>
+</div>
+
+<script>
+const pages=document.querySelectorAll(".page");
+const music=document.getElementById("music");
+
+function go(n){
+  pages.forEach(p=>p.classList.remove("active"));
+  document.getElementById("p"+n).classList.add("active");
+
+  if(n===2) startMeasure();
+  if(n===6) typeText("Will you be my Valentine? 💖","valText");
+  if(n===7) music.play();
+}
+
+function startMeasure(){
+  let bar=document.getElementById("bar");
+  let percent=document.getElementById("percent");
+  let warn=document.getElementById("warn");
+  let i=0;
+
+  let t=setInterval(()=>{
+    i++;
+    bar.style.width=i+"%";
+    percent.innerText=i+"%";
+    if(i>=120){
+      clearInterval(t);
+      warn.classList.remove("hidden");
+      setTimeout(()=>go(3),2000);
+    }
+  },30);
+}
+
+let opened=0;
+document.querySelectorAll(".option-btn").forEach(btn=>{
+  btn.onclick=()=>{
+    if(btn.classList.contains("revealed"))return;
+    btn.classList.add("revealed");
+    btn.innerText=btn.dataset.text;
+    opened++;
+    if(opened===5){
+      document.getElementById("seeMore").classList.remove("hidden");
+    }
+  };
+});
+
+function openNote(){
+  go(5);
+  document.getElementById("noteNext").classList.add("hidden");
+
+  const text=`I just wanted to tell you something, Abee...
+
+You really are special in a way that's hard to explain.
+
+There's a softness in the way you talk,
+a sweetness in the way you smile,
+and something genuine about you that feels comforting.
+
+You're just you — and that’s what makes you so lovely.`;
+
+  typeText(text,"noteText",40,()=>{
+    document.getElementById("noteNext").classList.remove("hidden");
+  });
+}
+
+function typeText(text,id,speed=40,cb){
+  let i=0;
+  const el=document.getElementById(id);
+  el.innerText="";
+  let t=setInterval(()=>{
+    el.innerText+=text.charAt(i);
+    i++;
+    if(i>=text.length){
+      clearInterval(t);
+      if(cb) cb();
+    }
+  },speed);
+}
+</script>
+
+</body>
+</html>
